@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NetworkManager.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
