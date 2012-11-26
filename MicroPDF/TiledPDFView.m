@@ -28,7 +28,7 @@
          */
         tiledLayer.levelsOfDetail = 4;
         tiledLayer.levelsOfDetailBias = 3;
-        tiledLayer.tileSize = CGSizeMake(1024.0, 1024.0);
+        tiledLayer.tileSize = CGSizeMake(512.0, 512.0);
         
         myScale = scale;
     }

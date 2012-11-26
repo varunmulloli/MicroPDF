@@ -12,7 +12,8 @@
 
 @interface PDFViewController : UIViewController
 
-@property (nonatomic, retain) NSURL* pdfURL;
+@property (nonatomic, retain) NSString *bookName;
 @property (nonatomic) NSInteger pageNo;
+@property (nonatomic) CGRect pageRect;
 
 @end

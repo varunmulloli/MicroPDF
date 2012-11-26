@@ -1,130 +1,158 @@
 //
-//  DetailViewController.m
-//  MicroPDF
+//  ViewController.m
+//  PDFScroll
 //
-//  Created by Varun Mulloli on 10/11/12.
+//  Created by Varun Mulloli on 23/11/12.
 //  Copyright (c) 2012 Varun Mulloli. All rights reserved.
 //
 
 #import "PDFPageViewController.h"
+#import "PDFViewController.h"
+#import "PDFScrollView.h"
 
 @implementation PDFPageViewController
-
-@synthesize pageNumber;
 @synthesize bookName;
 
-- (void)configureView
-{
-    // Update the user interface for the detail item.
-        
-        self.title = bookName;
-
-        NSArray *pathArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-
-        NSString *filePath= [[NSBundle bundleWithPath:[pathArray objectAtIndex:0]] pathForResource:bookName ofType:@"pdf"];
-        
-        pdfURL = [[NSURL alloc] initFileURLWithPath:filePath];
-        CGPDFDocumentRef PDFDocument = CGPDFDocumentCreateWithURL((__bridge CFURLRef)pdfURL);
-        totalPages = CGPDFDocumentGetNumberOfPages(PDFDocument);
-        CGPDFDocumentRelease(PDFDocument);
-        
-        currentPage = 1;
-        
-        pageNumber.title = [[NSString alloc] initWithFormat:@"%ld/%ld",currentPage,totalPages];
-
-        self.pageViewController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStylePageCurl navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
-        self.pageViewController.delegate = self;
-        self.pageViewController.dataSource = self;
-        
-        PDFViewController *startingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"PDF"];
-        startingPage.pdfURL = pdfURL;
-        startingPage.pageNo = currentPage;
-
-        [self.pageViewController setViewControllers:@[startingPage] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:NULL];
-        
-        [self addChildViewController:self.pageViewController];
-        [self.view addSubview:self.pageViewController.view];
-        
-        CGRect pageViewRect = self.view.bounds;
-        self.pageViewController.view.frame = pageViewRect;
-}
-
-- (IBAction) prevPageButton
-{
-    if(currentPage > 1)
-    {
-        currentPage -= 1;
-        pageNumber.title = [[NSString alloc] initWithFormat:@"%ld/%ld",currentPage,totalPages];
-        
-        PDFViewController *startingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"PDF"];
-        startingPage.pdfURL = pdfURL;
-        startingPage.pageNo = currentPage;
-        
-        [self.pageViewController setViewControllers:@[startingPage] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:NULL];
-    }
-}
-
-- (IBAction) nextPageButton
-{
-    if(currentPage != totalPages)
-    {
-        currentPage += 1;
-        pageNumber.title = [[NSString alloc] initWithFormat:@"%ld/%ld",currentPage,totalPages];
-        
-        PDFViewController *startingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"PDF"];
-        startingPage.pdfURL = pdfURL;
-        startingPage.pageNo = currentPage;
-        
-        [self.pageViewController setViewControllers:@[startingPage] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:NULL];
-    }
-}
-
-#pragma mark - Page View Controller Data Source
-
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
-{
-    if (currentPage == 1)
-        return nil;
-    else
-        currentPage -= 1;
-    
-    pageNumber.title = [[NSString alloc] initWithFormat:@"%ld/%ld",currentPage,totalPages];
-    
-    PDFViewController *previuosPage = [self.storyboard instantiateViewControllerWithIdentifier:@"PDF"];
-    previuosPage.pdfURL = pdfURL;
-    previuosPage.pageNo = currentPage;
-    
-    return previuosPage;
-}
-
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
-{
-    if (currentPage == totalPages)
-        return nil;
-    else
-        currentPage += 1;
-    
-    pageNumber.title = [[NSString alloc] initWithFormat:@"%ld/%ld",currentPage,totalPages];
-    
-    PDFViewController *nextPage = [self.storyboard instantiateViewControllerWithIdentifier:@"PDF"];
-    nextPage.pdfURL = pdfURL;
-    nextPage.pageNo = currentPage;
-    
-    return nextPage;
-}
+@synthesize scrollView;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-    [self configureView];
+    
+    [self.navigationController.navigationBar setTranslucent:YES];
+    [self.navigationController.toolbar setTranslucent:YES];
+    
+    UITapGestureRecognizer* tap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showHideToolBars:)];
+    tap.numberOfTapsRequired = 1;
+    [scrollView addGestureRecognizer:tap];
+    
+    loadedViewControllers = [[NSMutableArray alloc] init];
+    loadedPages = [[NSMutableArray alloc] init];
+    scrollView.delegate = self;
+    
+    NSArray *pathArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                             NSUserDomainMask, YES);
+    NSString *path = [[NSBundle bundleWithPath:[pathArray objectAtIndex:0]] pathForResource:[bookName stringByDeletingPathExtension] ofType:@"pdf"];
+    CGPDFDocumentRef PDFDocument = CGPDFDocumentCreateWithURL((__bridge CFURLRef)[NSURL fileURLWithPath:path]);
+    numberOfPages = CGPDFDocumentGetNumberOfPages(PDFDocument);
+    CGPDFDocumentRelease(PDFDocument);
+	
+    self.title = bookName;
+    
+    currentPage = 0;
+	[self alignSubviews];
+    
+    scrollViewFrame = scrollView.frame;
+    
+    [self loadViewWithPage:0];
+    [self loadViewWithPage:1];
 }
 
-- (void)viewDidUnload
+- (void) showHideToolBars:(id)sender
 {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    [self.pageViewController.view removeFromSuperview];
+    if ([self.navigationController isNavigationBarHidden])
+    {
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+        [self.navigationController setToolbarHidden:NO animated:YES];
+    }
+    else
+    {
+        [self.navigationController setNavigationBarHidden:YES animated:YES];
+        [self.navigationController setToolbarHidden:YES animated:YES];
+    }
+}
+
+- (void)alignSubviews
+{
+	scrollView.contentSize = CGSizeMake(numberOfPages*scrollView.bounds.size.width,
+										scrollView.bounds.size.height);
+	NSUInteger i = currentPage == 0 ? currentPage : currentPage - 1;
+	for (PDFViewController *viewController in loadedViewControllers)
+    {
+		viewController.view.frame = CGRectMake(i * scrollView.bounds.size.width, 0,
+							 scrollView.bounds.size.width, scrollView.bounds.size.height);
+		i++;
+	}
+}
+
+- (void) loadViewWithPage:(int)page
+{    
+    if (page < 0 || page >= numberOfPages)
+        return;
+    
+    if (![loadedPages containsObject:[NSNumber numberWithInt:page]])
+    {
+        PDFViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PDF"];
+        viewController.pageNo = page+1;
+        viewController.bookName = [bookName stringByDeletingPathExtension];
+        CGRect frame = scrollViewFrame;
+        frame.size.width -= 20;
+        frame.size.height -= 20;
+        viewController.pageRect = frame;
+        
+        [scrollView addSubview:viewController.view];
+        
+        if ((loadedPages.count != 0) && (page < [[loadedPages objectAtIndex:0] integerValue]))
+        {
+            [loadedPages insertObject:[NSNumber numberWithInt:page] atIndex:0];
+            [loadedViewControllers insertObject:viewController atIndex:0];
+        }
+        else
+        {
+            [loadedPages addObject:[NSNumber numberWithInt:page]];
+            [loadedViewControllers addObject:viewController];
+        }
+        viewController = nil;
+    }
+    
+    NSInteger location = [loadedPages indexOfObject:[NSNumber numberWithInt:page]];
+    PDFViewController *viewController = [loadedViewControllers objectAtIndex:location];
+    CGRect frame = scrollView.bounds;
+    frame.origin.x = scrollView.bounds.size.width*page;
+    viewController.view.frame = frame;
+    [(PDFScrollView *)viewController.view setZoomScale:1.0];
+    [loadedViewControllers replaceObjectAtIndex:location withObject:viewController];
+    viewController = nil;
+}
+
+- (void) releaseViewWithPage:(int)page
+{
+    if (page < 0 || page >= numberOfPages)
+        return;
+    if ([loadedPages containsObject:[NSNumber numberWithInt:page]])
+    {
+        NSInteger location = [loadedPages indexOfObject:[NSNumber numberWithInt:page]];
+        PDFViewController *viewController = [loadedViewControllers objectAtIndex:location];
+        [viewController.view removeFromSuperview];
+        [loadedViewControllers removeObjectAtIndex:location];
+        [loadedPages removeObjectAtIndex:location];
+        viewController = nil;
+    }
+}
+
+- (void) scrollViewDidEndDecelerating:(UIScrollView *)scroll
+{
+    int page = scrollView.contentOffset.x / scrollView.bounds.size.width;
+    
+    [self loadViewWithPage:page];
+    [self loadViewWithPage:page+1];
+    [self loadViewWithPage:page-1];
+    
+    [self releaseViewWithPage:page-2];
+    [self releaseViewWithPage:page+2];
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+								duration:(NSTimeInterval)duration
+{
+	currentPage = scrollView.contentOffset.x / scrollView.bounds.size.width;
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+										 duration:(NSTimeInterval)duration
+{
+	[self alignSubviews];
+	scrollView.contentOffset = CGPointMake(currentPage * scrollView.bounds.size.width, 0);
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

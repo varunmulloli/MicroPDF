@@ -20,7 +20,7 @@
     {
         self.decelerationRate = UIScrollViewDecelerationRateFast;
         self.delegate = self;
-        self.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
+        self.contentMode = UIViewContentModeScaleAspectFit;
     }
     return self;
 }
@@ -58,9 +58,13 @@
     CGPDFPageRelease(_PDFPage);
     _PDFPage = PDFPage;
     
+    //NSLog(@"%f ::: %f", self.frame.size.width,self.frame.size.height);
+    
     // Determine the size of the PDF page.
     CGRect pageRect = CGPDFPageGetBoxRect(_PDFPage, kCGPDFMediaBox);
-    PDFScale = self.frame.size.width/pageRect.size.width;
+    CGFloat widthScale = self.frame.size.width/pageRect.size.width;
+    CGFloat heightScale = self.frame.size.height/pageRect.size.height;
+    PDFScale = widthScale < heightScale ? widthScale : heightScale;
     pageRect.size = CGSizeMake(pageRect.size.width*PDFScale, pageRect.size.height*PDFScale);
     
     if (self.backgroundImageView != nil) {

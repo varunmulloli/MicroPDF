@@ -43,7 +43,7 @@
     
     toolbarItems = [NSArray arrayWithObjects:flex,progBar,flex,cancelButton,flex,nil];
     
-    /*////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
      //FOR TESTING PURPOSES ONLY
      NSArray *pathArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
      NSUserDomainMask, YES);
@@ -56,7 +56,7 @@
      NSData *items = [NSData dataWithContentsOfFile:originalPath];
      [items writeToFile:path atomically:YES];
      }
-     ////////////////////////////////////////////////////////////////////////////////////////*/
+     ////////////////////////////////////////////////////////////////////////////////////////
     
     // restore search settings if they were saved in didReceiveMemoryWarning.
     if (savedSearchTerm)
@@ -206,12 +206,14 @@
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    NSString *fileName = [listContent objectAtIndex:indexPath.row];
-    PDFPageViewController *readerViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PDFPage"];
-    readerViewController.bookName = [fileName stringByDeletingPathExtension];
-    [self.navigationController pushViewController:readerViewController animated:YES];
+    if ([segue.identifier isEqualToString:@"showPDF"])
+    {
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        PDFPageViewController *readerViewController = [segue destinationViewController];
+        readerViewController.bookName = [listContent objectAtIndex:indexPath.row];
+    }
 }
 
 #pragma mark - Content Filtering

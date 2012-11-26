@@ -10,15 +10,21 @@
 
 @implementation PDFViewController
 
-@synthesize pdfURL, pageNo;
+@synthesize bookName, pageNo, pageRect;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    NSArray *pathArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                             NSUserDomainMask, YES);
+    NSString *path = [[NSBundle bundleWithPath:[pathArray objectAtIndex:0]] pathForResource:bookName ofType:@"pdf"];
+    NSURL *pdfURL = [NSURL fileURLWithPath:path];
+    
     CGPDFDocumentRef PDFDocument = CGPDFDocumentCreateWithURL((__bridge CFURLRef)pdfURL);
     CGPDFPageRef PDFPage = CGPDFDocumentGetPage(PDFDocument, pageNo);
     
+    self.view.frame = pageRect;
     [(PDFScrollView *)self.view showPDFPage:PDFPage];
     
     CGPDFDocumentRelease(PDFDocument);
