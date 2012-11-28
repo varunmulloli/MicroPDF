@@ -28,7 +28,6 @@
     [(PDFScrollView *)self.view showPDFPage:PDFPage];
     
     CGPDFDocumentRelease(PDFDocument);
-    
 }
 
 - (void) viewDidUnload

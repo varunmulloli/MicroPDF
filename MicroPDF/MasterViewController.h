@@ -15,11 +15,7 @@
 <UISearchDisplayDelegate, UISearchBarDelegate, UITextFieldDelegate>
 {
     NSMutableArray *listContent;
-    NSMutableArray *listPathContent;
     NSMutableArray *filteredListContent;
-    
-    NSString		*savedSearchTerm;
-    BOOL			searchWasActive;
     
     UIProgressView *progressBar;
     UIBarButtonItem *cancelButton;
@@ -34,7 +30,7 @@
 }
 
 @property (nonatomic, strong, readwrite) NSURLConnection *connection;
-@property (nonatomic, copy,   readwrite) NSString *filePath;
+@property (nonatomic, copy, readwrite) NSString *filePath;
 @property (nonatomic, strong, readwrite) NSOutputStream *fileStream;
 
 @end

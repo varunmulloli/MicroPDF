@@ -60,9 +60,6 @@
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <segue destination="21" kind="push" identifier="showPDF" id="uQP-9b-MXL"/>
-                                </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AddCell" id="RDr-Xd-ouS">
                                 <rect key="frame" x="0.0" y="110" width="320" height="44"/>
@@ -139,7 +136,7 @@
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="unX-HR-1ca" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="PDF" id="1mh-Jk-fbR" customClass="PDFViewController" sceneMemberID="viewController">
-                    <scrollView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" maximumZoomScale="8" id="7vw-hO-zbh" customClass="PDFScrollView">
+                    <scrollView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" maximumZoomScale="5" id="7vw-hO-zbh" customClass="PDFScrollView">
                         <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </scrollView>

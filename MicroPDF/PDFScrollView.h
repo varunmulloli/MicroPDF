@@ -7,22 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <QuartzCore/QuartzCore.h>
-
-#import "TiledPDFView.h"
 
 @interface PDFScrollView : UIScrollView <UIScrollViewDelegate>
 {
-    CGFloat PDFScale;
-    
     CGPDFPageRef _PDFPage;
+    UIImageView *PDFImageView;
 }
-
-// A low resolution image of the PDF page that is displayed until the TiledPDFView renders its content.
-@property (nonatomic, weak) UIImageView *backgroundImageView;
-
-// The TiledPDFView that is currently front most.
-@property (nonatomic, weak) TiledPDFView *tiledPDFView;
 
 - (void)showPDFPage:(CGPDFPageRef)PDFPage;
 

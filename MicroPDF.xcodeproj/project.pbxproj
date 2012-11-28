@@ -18,10 +18,8 @@
 		8B3F9477165E4C0C004FD278 /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F9476165E4C0C004FD278 /* MasterViewController.m */; };
 		8B3F9482165E4CF1004FD278 /* NetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F9481165E4CF1004FD278 /* NetworkManager.m */; };
 		8B3F9484165E4D01004FD278 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3F9483165E4D01004FD278 /* CFNetwork.framework */; };
-		8B3F9486165E4D07004FD278 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3F9485165E4D07004FD278 /* QuartzCore.framework */; };
 		8BC5820D16625E9300FBBA3E /* PDFScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC5820816625E9300FBBA3E /* PDFScrollView.m */; };
 		8BC5820E16625E9300FBBA3E /* PDFViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC5820A16625E9300FBBA3E /* PDFViewController.m */; };
-		8BC5820F16625E9300FBBA3E /* TiledPDFView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC5820C16625E9300FBBA3E /* TiledPDFView.m */; };
 		8BC5821216625F2800FBBA3E /* PDFPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC5821116625F2800FBBA3E /* PDFPageViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -43,13 +41,10 @@
 		8B3F9480165E4CF1004FD278 /* NetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkManager.h; sourceTree = "<group>"; };
 		8B3F9481165E4CF1004FD278 /* NetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkManager.m; sourceTree = "<group>"; };
 		8B3F9483165E4D01004FD278 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
-		8B3F9485165E4D07004FD278 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8BC5820716625E9300FBBA3E /* PDFScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDFScrollView.h; sourceTree = "<group>"; };
 		8BC5820816625E9300FBBA3E /* PDFScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDFScrollView.m; sourceTree = "<group>"; };
 		8BC5820916625E9300FBBA3E /* PDFViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDFViewController.h; sourceTree = "<group>"; };
 		8BC5820A16625E9300FBBA3E /* PDFViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDFViewController.m; sourceTree = "<group>"; };
-		8BC5820B16625E9300FBBA3E /* TiledPDFView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TiledPDFView.h; sourceTree = "<group>"; };
-		8BC5820C16625E9300FBBA3E /* TiledPDFView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TiledPDFView.m; sourceTree = "<group>"; };
 		8BC5821016625F2800FBBA3E /* PDFPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDFPageViewController.h; sourceTree = "<group>"; };
 		8BC5821116625F2800FBBA3E /* PDFPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDFPageViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -59,7 +54,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B3F9486165E4D07004FD278 /* QuartzCore.framework in Frameworks */,
 				8B3F9484165E4D01004FD278 /* CFNetwork.framework in Frameworks */,
 				8B3F9461165E4C0C004FD278 /* UIKit.framework in Frameworks */,
 				8B3F9463165E4C0C004FD278 /* Foundation.framework in Frameworks */,
@@ -90,7 +84,6 @@
 		8B3F945F165E4C0C004FD278 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8B3F9485165E4D07004FD278 /* QuartzCore.framework */,
 				8B3F9483165E4D01004FD278 /* CFNetwork.framework */,
 				8B3F9460165E4C0C004FD278 /* UIKit.framework */,
 				8B3F9462165E4C0C004FD278 /* Foundation.framework */,
@@ -115,8 +108,6 @@
 				8BC5820A16625E9300FBBA3E /* PDFViewController.m */,
 				8BC5820716625E9300FBBA3E /* PDFScrollView.h */,
 				8BC5820816625E9300FBBA3E /* PDFScrollView.m */,
-				8BC5820B16625E9300FBBA3E /* TiledPDFView.h */,
-				8BC5820C16625E9300FBBA3E /* TiledPDFView.m */,
 				8B1DABEA1663138600CB9FA3 /* Test PDF.pdf */,
 				8B3F9467165E4C0C004FD278 /* Supporting Files */,
 			);
@@ -204,7 +195,6 @@
 				8B3F9482165E4CF1004FD278 /* NetworkManager.m in Sources */,
 				8BC5820D16625E9300FBBA3E /* PDFScrollView.m in Sources */,
 				8BC5820E16625E9300FBBA3E /* PDFViewController.m in Sources */,
-				8BC5820F16625E9300FBBA3E /* TiledPDFView.m in Sources */,
 				8BC5821216625F2800FBBA3E /* PDFPageViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

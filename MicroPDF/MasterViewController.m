@@ -27,6 +27,8 @@
     
     // Do any additional setup after loading the view, typically from a nib.
     isDownloading = NO;
+    filteredListContent = [NSMutableArray new];
+    
     
     //Top navigation bar configuration
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
@@ -57,17 +59,7 @@
      [items writeToFile:path atomically:YES];
      }
      ////////////////////////////////////////////////////////////////////////////////////////
-    
-    // restore search settings if they were saved in didReceiveMemoryWarning.
-    if (savedSearchTerm)
-	{
-        [self.searchDisplayController setActive:searchWasActive];
-        [self.searchDisplayController.searchBar setText:savedSearchTerm];
-        
-        savedSearchTerm = nil;
-    }
-    
-    [self.tableView reloadData];
+
 	self.tableView.scrollEnabled = YES;
 }
 
@@ -81,13 +73,6 @@
     [self.tableView reloadData];
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
-    // save the state of the search UI so that it can be restored if the view is re-created
-    searchWasActive = [self.searchDisplayController isActive];
-    savedSearchTerm = [self.searchDisplayController.searchBar text];
-}
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
@@ -95,15 +80,17 @@
 
 - (void) loadFilesFromDocumentDirectory
 {
-    listPathContent = nil;
     listContent = nil;
-    filteredListContent = nil;
     
     NSArray *pathArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
                                                              NSUserDomainMask, YES);
-    listPathContent = [[[NSBundle bundleWithPath:[pathArray objectAtIndex:0]] pathsForResourcesOfType:@"pdf" inDirectory:nil] mutableCopy];
+    NSArray *listPathContent = [[NSBundle bundleWithPath:[pathArray objectAtIndex:0]] pathsForResourcesOfType:@"pdf" inDirectory:nil];
     
     listContent = [NSMutableArray new];
+    if (self.editing)
+    {
+        [listContent addObject:@""];
+    }
     
     for (NSInteger i=0; i<listPathContent.count; i++)
     {
@@ -111,9 +98,6 @@
         
         [listContent addObject:thefilename];
     }
-    
-    // create a filtered list that will contain products for the search results table.
-    filteredListContent = [NSMutableArray arrayWithCapacity:[listContent count]];
 }
 
 #pragma mark - Table View
@@ -129,7 +113,7 @@
 	if (tableView == self.searchDisplayController.searchResultsTableView)
         return [filteredListContent count];
 	else
-        return self.editing ? [listContent count]+1 : [listContent count];
+        return listContent.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -148,34 +132,27 @@
         return cell;
     }
     
-    //If the table is in editing mode
-    if(self.editing && indexPath.row!=0 && tableView != self.searchDisplayController.searchResultsTableView)
-    {
-        NSString *object = [listContent objectAtIndex:indexPath.row-1];
-        
-        cell.textLabel.text = object;
-        return cell;
-    }
-    
-    NSString *object = nil;
+    NSString *cellLabel = nil;
     if (tableView == self.searchDisplayController.searchResultsTableView)
-        object = [filteredListContent objectAtIndex:indexPath.row];
+        cellLabel = [filteredListContent objectAtIndex:indexPath.row];
     else
-        object = [listContent objectAtIndex:indexPath.row];
+        cellLabel = [listContent objectAtIndex:indexPath.row];
     
-    cell.textLabel.text = object;
+    cell.textLabel.text = cellLabel;
     return cell;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return self.editing;
+    //return YES;
 }
 
-- (UITableViewCellEditingStyle) tableView: (UITableView *) tableView
-            editingStyleForRowAtIndexPath: (NSIndexPath *) indexPath
+- (UITableViewCellEditingStyle) tableView:(UITableView *)tableView
+            editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == 0 && self.editing)
+    //If the cell is "Add New PDF" cell
+    if ([[listContent objectAtIndex:indexPath.row] isEqualToString:@""])
         return UITableViewCellEditingStyleInsert;
     else
         return UITableViewCellEditingStyleDelete;
@@ -185,35 +162,61 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
+        NSArray *pathArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                                 NSUserDomainMask, YES);
+        NSString *path;
+        if (tableView == self.searchDisplayController.searchResultsTableView)
+        {
+            NSUInteger location = [listContent indexOfObject:[filteredListContent objectAtIndex:indexPath.row]];
+            path = [[NSBundle bundleWithPath:[pathArray objectAtIndex:0]] pathForResource:[[filteredListContent objectAtIndex:indexPath.row] stringByDeletingPathExtension] ofType:@"pdf"];
+            [filteredListContent removeObjectAtIndex:indexPath.row];
+            [listContent removeObjectAtIndex:location];
+        }
+        else
+        {
+            path = [[NSBundle bundleWithPath:[pathArray objectAtIndex:0]] pathForResource:[[listContent objectAtIndex:indexPath.row] stringByDeletingPathExtension] ofType:@"pdf"];
+            [listContent removeObjectAtIndex:indexPath.row];
+        }
+        
         //Delete the PDF from the Documents folder
-        [[NSFileManager defaultManager] removeItemAtPath:[listPathContent objectAtIndex:indexPath.row-1] error:nil];
+        [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
         
         //Remove its data from the table
-        [listContent removeObjectAtIndex:indexPath.row-1];
-        [listPathContent removeObjectAtIndex:indexPath.row-1];
-        
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
+    else if (editingStyle == UITableViewCellEditingStyleInsert)
+    {
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        [(UITextField *)[cell viewWithTag:1] becomeFirstResponder];
     }
 }
 
 -(void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
     [super setEditing:editing animated:animated];
-    [self.tableView reloadData];
     
-    //Animate the "Add New PDF" cell
-    if(editing)
-        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
+    if (editing)
+    {
+        [listContent insertObject:@"" atIndex:0];
+        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationBottom];
+    }
+    else
+    {
+        [listContent removeObjectAtIndex:0];
+        [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationBottom];
+    }
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+#pragma mark - Segue
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([segue.identifier isEqualToString:@"showPDF"])
-    {
-        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        PDFPageViewController *readerViewController = [segue destinationViewController];
+    PDFPageViewController *readerViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PDFPage"];
+    if (tableView == self.searchDisplayController.searchResultsTableView)
+        readerViewController.bookName = [filteredListContent objectAtIndex:indexPath.row];
+    else
         readerViewController.bookName = [listContent objectAtIndex:indexPath.row];
-    }
+    [self.navigationController pushViewController:readerViewController animated:YES];
 }
 
 #pragma mark - Content Filtering
@@ -262,6 +265,16 @@
     }
     
     return YES;
+}
+
+- (void) textFieldDidBeginEditing:(UITextField *)textField
+{
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:textField action:@selector(resignFirstResponder)];
+}
+
+-(void) textFieldDidEndEditing:(UITextField *)textField
+{
+    self.navigationItem.rightBarButtonItem = nil;
 }
 
 #pragma mark - Download Manager
@@ -459,7 +472,7 @@
     [self.navigationController.toolbar setItems:nil animated:YES];
     
     [self loadFilesFromDocumentDirectory];
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.tableView reloadData];
     
     [[NetworkManager sharedInstance] didStopNetworkOperation];
 }
