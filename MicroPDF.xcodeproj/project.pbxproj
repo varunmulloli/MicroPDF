@@ -14,13 +14,12 @@
 		8B3F946B165E4C0C004FD278 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8B3F9469165E4C0C004FD278 /* InfoPlist.strings */; };
 		8B3F946D165E4C0C004FD278 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F946C165E4C0C004FD278 /* main.m */; };
 		8B3F9471165E4C0C004FD278 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F9470165E4C0C004FD278 /* AppDelegate.m */; };
-		8B3F9474165E4C0C004FD278 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B3F9472165E4C0C004FD278 /* MainStoryboard.storyboard */; };
+		8B3F9474165E4C0C004FD278 /* iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B3F9472165E4C0C004FD278 /* iPhone.storyboard */; };
 		8B3F9477165E4C0C004FD278 /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F9476165E4C0C004FD278 /* MasterViewController.m */; };
 		8B3F9482165E4CF1004FD278 /* NetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3F9481165E4CF1004FD278 /* NetworkManager.m */; };
 		8B3F9484165E4D01004FD278 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3F9483165E4D01004FD278 /* CFNetwork.framework */; };
-		8BC5820D16625E9300FBBA3E /* PDFScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC5820816625E9300FBBA3E /* PDFScrollView.m */; };
-		8BC5820E16625E9300FBBA3E /* PDFViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC5820A16625E9300FBBA3E /* PDFViewController.m */; };
-		8BC5821216625F2800FBBA3E /* PDFPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC5821116625F2800FBBA3E /* PDFPageViewController.m */; };
+		8BB9F540166BA09E00D7E054 /* PDFViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB9F53F166BA09E00D7E054 /* PDFViewController.m */; };
+		8BB9F54E166BB1C700D7E054 /* iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8BB9F54C166BB1C700D7E054 /* iPad.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,18 +34,15 @@
 		8B3F946E165E4C0C004FD278 /* MicroPDF-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MicroPDF-Prefix.pch"; sourceTree = "<group>"; };
 		8B3F946F165E4C0C004FD278 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		8B3F9470165E4C0C004FD278 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		8B3F9473165E4C0C004FD278 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
+		8B3F9473165E4C0C004FD278 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/iPhone.storyboard; sourceTree = "<group>"; };
 		8B3F9475165E4C0C004FD278 /* MasterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MasterViewController.h; sourceTree = "<group>"; };
 		8B3F9476165E4C0C004FD278 /* MasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MasterViewController.m; sourceTree = "<group>"; };
 		8B3F9480165E4CF1004FD278 /* NetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkManager.h; sourceTree = "<group>"; };
 		8B3F9481165E4CF1004FD278 /* NetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkManager.m; sourceTree = "<group>"; };
 		8B3F9483165E4D01004FD278 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
-		8BC5820716625E9300FBBA3E /* PDFScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDFScrollView.h; sourceTree = "<group>"; };
-		8BC5820816625E9300FBBA3E /* PDFScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDFScrollView.m; sourceTree = "<group>"; };
-		8BC5820916625E9300FBBA3E /* PDFViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDFViewController.h; sourceTree = "<group>"; };
-		8BC5820A16625E9300FBBA3E /* PDFViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDFViewController.m; sourceTree = "<group>"; };
-		8BC5821016625F2800FBBA3E /* PDFPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDFPageViewController.h; sourceTree = "<group>"; };
-		8BC5821116625F2800FBBA3E /* PDFPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDFPageViewController.m; sourceTree = "<group>"; };
+		8BB9F53E166BA09E00D7E054 /* PDFViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDFViewController.h; sourceTree = "<group>"; };
+		8BB9F53F166BA09E00D7E054 /* PDFViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDFViewController.m; sourceTree = "<group>"; };
+		8BB9F54D166BB1C700D7E054 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/iPad.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,15 +95,12 @@
 				8B3F9470165E4C0C004FD278 /* AppDelegate.m */,
 				8B3F9480165E4CF1004FD278 /* NetworkManager.h */,
 				8B3F9481165E4CF1004FD278 /* NetworkManager.m */,
-				8B3F9472165E4C0C004FD278 /* MainStoryboard.storyboard */,
+				8B3F9472165E4C0C004FD278 /* iPhone.storyboard */,
+				8BB9F54C166BB1C700D7E054 /* iPad.storyboard */,
 				8B3F9475165E4C0C004FD278 /* MasterViewController.h */,
 				8B3F9476165E4C0C004FD278 /* MasterViewController.m */,
-				8BC5821016625F2800FBBA3E /* PDFPageViewController.h */,
-				8BC5821116625F2800FBBA3E /* PDFPageViewController.m */,
-				8BC5820916625E9300FBBA3E /* PDFViewController.h */,
-				8BC5820A16625E9300FBBA3E /* PDFViewController.m */,
-				8BC5820716625E9300FBBA3E /* PDFScrollView.h */,
-				8BC5820816625E9300FBBA3E /* PDFScrollView.m */,
+				8BB9F53E166BA09E00D7E054 /* PDFViewController.h */,
+				8BB9F53F166BA09E00D7E054 /* PDFViewController.m */,
 				8B1DABEA1663138600CB9FA3 /* Test PDF.pdf */,
 				8B3F9467165E4C0C004FD278 /* Supporting Files */,
 			);
@@ -177,8 +170,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B3F946B165E4C0C004FD278 /* InfoPlist.strings in Resources */,
-				8B3F9474165E4C0C004FD278 /* MainStoryboard.storyboard in Resources */,
+				8B3F9474165E4C0C004FD278 /* iPhone.storyboard in Resources */,
 				8B1DABEB1663138600CB9FA3 /* Test PDF.pdf in Resources */,
+				8BB9F54E166BB1C700D7E054 /* iPad.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -193,9 +187,7 @@
 				8B3F9471165E4C0C004FD278 /* AppDelegate.m in Sources */,
 				8B3F9477165E4C0C004FD278 /* MasterViewController.m in Sources */,
 				8B3F9482165E4CF1004FD278 /* NetworkManager.m in Sources */,
-				8BC5820D16625E9300FBBA3E /* PDFScrollView.m in Sources */,
-				8BC5820E16625E9300FBBA3E /* PDFViewController.m in Sources */,
-				8BC5821216625F2800FBBA3E /* PDFPageViewController.m in Sources */,
+				8BB9F540166BA09E00D7E054 /* PDFViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,12 +202,20 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		8B3F9472165E4C0C004FD278 /* MainStoryboard.storyboard */ = {
+		8B3F9472165E4C0C004FD278 /* iPhone.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				8B3F9473165E4C0C004FD278 /* en */,
 			);
-			name = MainStoryboard.storyboard;
+			name = iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		8BB9F54C166BB1C700D7E054 /* iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8BB9F54D166BB1C700D7E054 /* en */,
+			);
+			name = iPad.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -276,7 +276,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MicroPDF/MicroPDF-Prefix.pch";
 				INFOPLIST_FILE = "MicroPDF/MicroPDF-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -287,7 +289,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MicroPDF/MicroPDF-Prefix.pch";
 				INFOPLIST_FILE = "MicroPDF/MicroPDF-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

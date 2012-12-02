@@ -29,7 +29,6 @@
     isDownloading = NO;
     filteredListContent = [NSMutableArray new];
     
-    
     //Top navigation bar configuration
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
     
@@ -209,14 +208,12 @@
 
 #pragma mark - Segue
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    PDFPageViewController *readerViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PDFPage"];
-    if (tableView == self.searchDisplayController.searchResultsTableView)
-        readerViewController.bookName = [filteredListContent objectAtIndex:indexPath.row];
-    else
-        readerViewController.bookName = [listContent objectAtIndex:indexPath.row];
-    [self.navigationController pushViewController:readerViewController animated:YES];
+    NSString *bookName = ((UITableViewCell *)sender).textLabel.text;
+    
+    PDFViewController *viewController = [segue destinationViewController];
+    viewController.bookName = bookName;
 }
 
 #pragma mark - Content Filtering

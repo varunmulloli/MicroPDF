@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "PDFPageViewController.h"
+#import "PDFViewController.h"
 #import "NetworkManager.h"
 
 @interface MasterViewController : UITableViewController

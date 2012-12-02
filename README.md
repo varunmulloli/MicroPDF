@@ -1,4 +1,4 @@
-## MicroPDF v0.1 README
+## MicroPDF v1.0 README
 
 Copyright © 2012 Varun Mulloli. All rights reserved.
 
@@ -13,10 +13,8 @@ An iOS device (iPhone, iPad or the iPod Touch) running at least iOS 5.
 ### FEATURES:
 
 * Simplest user interface
-* Fast rendering of PDFs
 * Easy to use PDF Library
 * Add PDFs directly via URL to the Library
-* Enhanced viewing experience with page-slide animations
 * Supports both portrait and landscape interface orientations
 * Supports zooming up to 8x 
 

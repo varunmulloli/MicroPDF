@@ -1,8 +1,8 @@
 //
-//  ViewController.m
+//  PDFViewController.m
 //  MicroPDF
 //
-//  Created by Varun Mulloli on 02/11/12.
+//  Created by Varun Mulloli on 02/12/12.
 //  Copyright (c) 2012 Varun Mulloli. All rights reserved.
 //
 
@@ -10,34 +10,37 @@
 
 @implementation PDFViewController
 
-@synthesize bookName, pageNo, pageRect;
+@synthesize bookName, webView, activity;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+	// Do any additional setup after loading the view.
+    self.title = bookName;
     NSArray *pathArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
                                                              NSUserDomainMask, YES);
-    NSString *path = [[NSBundle bundleWithPath:[pathArray objectAtIndex:0]] pathForResource:bookName ofType:@"pdf"];
-    NSURL *pdfURL = [NSURL fileURLWithPath:path];
+    NSString *path = [[NSBundle bundleWithPath:[pathArray objectAtIndex:0]] pathForResource:[bookName stringByDeletingPathExtension] ofType:@"pdf"];
+    webView.backgroundColor = [UIColor clearColor];
     
-    CGPDFDocumentRef PDFDocument = CGPDFDocumentCreateWithURL((__bridge CFURLRef)pdfURL);
-    CGPDFPageRef PDFPage = CGPDFDocumentGetPage(PDFDocument, pageNo);
+    NSURL *url = [NSURL fileURLWithPath:path];
+    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
     
-    self.view.frame = pageRect;
-    [(PDFScrollView *)self.view showPDFPage:PDFPage];
-    
-    CGPDFDocumentRelease(PDFDocument);
+    [webView loadRequest:requestObj];
 }
 
-- (void) viewDidUnload
+-(void) webViewDidStartLoad:(UIWebView *)webView
 {
-    [super viewDidUnload];
+    [activity startAnimating];
+}
+
+- (void) webViewDidFinishLoad:(UIWebView *)webView
+{
+    [activity stopAnimating];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+	return YES;
 }
 
 @end
