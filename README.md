@@ -15,8 +15,11 @@ An iOS device (iPhone, iPad or the iPod Touch) running at least iOS 5.
 * Simplest user interface
 * Easy to use PDF Library
 * Add PDFs directly via URL to the Library
+* Import PDF files from Safari, Mail etc.
+* Export PDF files to other PDF Viewers like iBooks
+* Print PDFs via AirPrint 
 * Supports both portrait and landscape interface orientations
-* Supports zooming up to 8x 
+* Supports zooming up to 10x 
 
 ### CONTACT INFO:
 
