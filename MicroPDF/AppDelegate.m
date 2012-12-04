@@ -13,6 +13,16 @@
     char _networkOperationCountDummy;
 }
 
+-(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    if (url != nil && [url isFileURL])
+    {
+        self.viewController = [[MasterViewController alloc] init];
+        [self.viewController handleDocumentOpenURL:url];
+    }
+    return YES;
+}
+
 // Override point for customization after application launch.
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {

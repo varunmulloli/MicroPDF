@@ -33,4 +33,6 @@
 @property (nonatomic, copy, readwrite) NSString *filePath;
 @property (nonatomic, strong, readwrite) NSOutputStream *fileStream;
 
+-(void)handleDocumentOpenURL:(NSURL *)URL;
+
 @end

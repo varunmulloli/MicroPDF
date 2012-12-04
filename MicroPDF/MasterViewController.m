@@ -22,6 +22,7 @@
     
     //Top navigation bar configuration
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reloadTable:)];
     
     //Bottom toolbar configuration
     progressBar = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
@@ -39,7 +40,7 @@
      //FOR TESTING PURPOSES ONLY
      NSArray *pathArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
      NSUserDomainMask, YES);
-     NSString *path = [[pathArray objectAtIndex:0] stringByAppendingPathComponent:@"Test PDF.pdf"];
+     NSString *path = [[pathArray objectAtIndex:0] stringByAppendingPathComponent:@"Inbox/Test PDF.pdf"];
      BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:path];
      if (!fileExists)
      {
@@ -59,8 +60,7 @@
     
     if (isDownloading)
         self.toolbarItems = toolbarItems;
-    [self loadFilesFromDocumentDirectory];
-    [self.tableView reloadData];
+    [self reloadTable:self];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -74,7 +74,8 @@
     
     NSArray *pathArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
                                                              NSUserDomainMask, YES);
-    NSArray *listPathContent = [[NSBundle bundleWithPath:[pathArray objectAtIndex:0]] pathsForResourcesOfType:@"pdf" inDirectory:nil];
+    NSString *documentDirectory = [[pathArray objectAtIndex:0] stringByAppendingPathComponent:@"Inbox"];
+    NSArray *listPathContent = [[NSBundle bundleWithPath:documentDirectory] pathsForResourcesOfType:@"pdf" inDirectory:nil];
     
     listContent = [NSMutableArray new];
     if (self.editing)
@@ -154,17 +155,18 @@
     {
         NSArray *pathArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
                                                                  NSUserDomainMask, YES);
+        NSString *documentDirectory = [[pathArray objectAtIndex:0] stringByAppendingPathComponent:@"Inbox"];
         NSString *path;
         if (tableView == self.searchDisplayController.searchResultsTableView)
         {
             NSUInteger location = [listContent indexOfObject:[filteredListContent objectAtIndex:indexPath.row]];
-            path = [[NSBundle bundleWithPath:[pathArray objectAtIndex:0]] pathForResource:[[filteredListContent objectAtIndex:indexPath.row] stringByDeletingPathExtension] ofType:@"pdf"];
+            path = [[NSBundle bundleWithPath:documentDirectory] pathForResource:[[filteredListContent objectAtIndex:indexPath.row] stringByDeletingPathExtension] ofType:@"pdf"];
             [filteredListContent removeObjectAtIndex:indexPath.row];
             [listContent removeObjectAtIndex:location];
         }
         else
         {
-            path = [[NSBundle bundleWithPath:[pathArray objectAtIndex:0]] pathForResource:[[listContent objectAtIndex:indexPath.row] stringByDeletingPathExtension] ofType:@"pdf"];
+            path = [[NSBundle bundleWithPath:documentDirectory] pathForResource:[[listContent objectAtIndex:indexPath.row] stringByDeletingPathExtension] ofType:@"pdf"];
             [listContent removeObjectAtIndex:indexPath.row];
         }
         
@@ -225,7 +227,8 @@
     
     NSArray *pathArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
                                                              NSUserDomainMask, YES);
-    NSString *path = [[NSBundle bundleWithPath:[pathArray objectAtIndex:0]] pathForResource:[bookName stringByDeletingPathExtension] ofType:@"pdf"];
+    NSString *documentDirectory = [[pathArray objectAtIndex:0] stringByAppendingPathComponent:@"Inbox"];
+    NSString *path = [[NSBundle bundleWithPath:documentDirectory] pathForResource:[bookName stringByDeletingPathExtension] ofType:@"pdf"];
     
     return [NSURL fileURLWithPath:path];
 }
@@ -365,7 +368,7 @@
             //Create the file's path
             NSArray *pathArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
                                                                      NSUserDomainMask, YES);
-            NSString *documentDirectory = [pathArray objectAtIndex:0];
+            NSString *documentDirectory = [[pathArray objectAtIndex:0] stringByAppendingPathComponent:@"Inbox"];
             filePath = [documentDirectory stringByAppendingPathComponent:[url lastPathComponent]];
             
             //If the file already exists, get a new filename
@@ -487,8 +490,7 @@
     isDownloading = NO;
     [self.navigationController.toolbar setItems:nil animated:YES];
     
-    [self loadFilesFromDocumentDirectory];
-    [self.tableView reloadData];
+    [self reloadTable:self];
     
     [[NetworkManager sharedInstance] didStopNetworkOperation];
 }
@@ -496,6 +498,25 @@
 - (void)cancelDownload:(id)sender
 {
     [self stopReceiveWithStatus:@"Download aborted by user."];
+}
+
+- (void)handleDocumentOpenURL:(NSURL *)URL
+{
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle: @"Import PDF"
+                          message:@"File added to Library."
+                          delegate:nil
+                          cancelButtonTitle:@"Okay"
+                          otherButtonTitles:nil, nil];
+    [alert show];
+    
+    [self reloadTable:self];
+}
+
+- (void) reloadTable:(id)sender
+{
+    [self loadFilesFromDocumentDirectory];
+    [self.tableView reloadData];
 }
 
 @end

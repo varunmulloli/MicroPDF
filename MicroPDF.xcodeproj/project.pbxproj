@@ -94,9 +94,9 @@
 				8B3F9470165E4C0C004FD278 /* AppDelegate.m */,
 				8B3F9480165E4CF1004FD278 /* NetworkManager.h */,
 				8B3F9481165E4CF1004FD278 /* NetworkManager.m */,
-				8B3F9472165E4C0C004FD278 /* Interface.storyboard */,
 				8B3F9475165E4C0C004FD278 /* MasterViewController.h */,
 				8B3F9476165E4C0C004FD278 /* MasterViewController.m */,
+				8B3F9472165E4C0C004FD278 /* Interface.storyboard */,
 				8B1DABEA1663138600CB9FA3 /* Test PDF.pdf */,
 				8B3F9467165E4C0C004FD278 /* Supporting Files */,
 			);
