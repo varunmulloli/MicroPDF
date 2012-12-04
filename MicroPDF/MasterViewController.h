@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuickLook/QuickLook.h>
 
-#import "PDFViewController.h"
 #import "NetworkManager.h"
 
 @interface MasterViewController : UITableViewController
-<UISearchDisplayDelegate, UISearchBarDelegate, UITextFieldDelegate>
+<UISearchDisplayDelegate, UISearchBarDelegate, UITextFieldDelegate, QLPreviewControllerDataSource,QLPreviewControllerDelegate>
 {
     NSMutableArray *listContent;
     NSMutableArray *filteredListContent;

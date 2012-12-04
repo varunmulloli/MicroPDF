@@ -12,15 +12,6 @@
 
 @synthesize connection, filePath, fileStream;
 
-- (void)awakeFromNib
-{
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        self.clearsSelectionOnViewWillAppear = NO;
-        self.contentSizeForViewInPopover = CGSizeMake(320.0, 600.0);
-    }
-    [super awakeFromNib];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -206,14 +197,42 @@
     }
 }
 
-#pragma mark - Segue
-
-- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *bookName = ((UITableViewCell *)sender).textLabel.text;
+    QLPreviewController *previewController = [[QLPreviewController alloc] init];
+    previewController.dataSource = self;
+    previewController.delegate = self;
     
-    PDFViewController *viewController = [segue destinationViewController];
-    viewController.bookName = bookName;
+    if (tableView == self.searchDisplayController.searchResultsTableView)
+    {
+        NSString *bookName = [filteredListContent objectAtIndex:indexPath.row];
+        previewController.currentPreviewItemIndex = [listContent indexOfObject:bookName];
+    }
+    else
+        previewController.currentPreviewItemIndex = indexPath.row;
+    
+    [self.navigationController pushViewController:previewController animated:YES];
+}
+
+- (NSInteger) numberOfPreviewItemsInPreviewController:(QLPreviewController *)controller
+{
+    return listContent.count;
+}
+
+- (id<QLPreviewItem>)previewController:(QLPreviewController *)controller previewItemAtIndex:(NSInteger)index
+{
+    NSString *bookName = [listContent objectAtIndex:index];
+    
+    NSArray *pathArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                             NSUserDomainMask, YES);
+    NSString *path = [[NSBundle bundleWithPath:[pathArray objectAtIndex:0]] pathForResource:[bookName stringByDeletingPathExtension] ofType:@"pdf"];
+    
+    return [NSURL fileURLWithPath:path];
+}
+
+- (BOOL)previewController:(QLPreviewController *)controller shouldOpenURL:(NSURL *)url forPreviewItem:(id <QLPreviewItem>)item {
+	
+	return YES;
 }
 
 #pragma mark - Content Filtering
